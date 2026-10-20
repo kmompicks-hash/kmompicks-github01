@@ -61,12 +61,24 @@
 - 3~5줄의 가볍고 솔직한 텍스트, 마지막 줄 질문으로 공감 반응 유도
 
 #### 6. 제휴 관리 시스템
-- `config/affiliate_config.json`에 세시간전, 쿠팡, 브랜드커넥트 링크를 분리 관리하고 자동 매핑 (구축 예정)
+- 이미 구축되어 있음: 비공개 저장소 **kmompicks-hash/kmompicks** (Python 파이프라인)
+  - `config/affiliate_config.json`: 세시간전·쿠팡·브랜드커넥트·네이버 쇼핑 링크와 공정위 문구 분리 관리
+  - `src/publish_wp.py`: 워드프레스 REST API 업로드, **기본값 임시저장(draft)**
+  - `templates/prompts/`: 채널별 규칙 (딥픽 구조, 네이버 가독성 규칙 등)
+- 제휴 제품 글을 쓸 때는 그 저장소의 affiliate_config.json 링크를 기준으로 매핑
 
 ---
 
-### 결과물 저장 규칙
-- 생성한 콘텐츠는 `content/YYYY-MM-DD_모드_주제.md` 파일 하나에 5개 채널을 섹션으로 나눠 저장
-  - 예: `content/2026-10-20_deeppick_series01_git-setup.md`
+### 결과물 저장 규칙 (kmompicks 파이프라인 출력과 같은 형식)
+- 폴더: `content/YYYYMMDD-<영문-slug>/`
+  - `1_wordpress.html`: 맨 위 `<!-- SEO Title / Meta Description / Slug / Focus Keyword / Tags -->` 주석, 한눈에 보기 박스, 목차 nav, H2/H3(id 앵커), FAQ, 마무리, 공정위 문구, BlogPosting·FAQPage JSON-LD
+  - `2_naver.txt`: `[제목]` → `[가운데] 💡 결론적으로 ~` 한 줄 → `[대표 이미지]` → `━━` 구분선 + `▶ 소제목` 블록 → 정리 → 공정위 문구 → 해시태그. 한 줄 40자, 한 문단 3줄 이내, 짧은 감탄·사진 자리는 `[가운데]`
+  - `3_shortform.md`, `4_cardnews.md`, `5_threads.md`
+  - `data.json`: `input`(topic/mode/category)과 `wordpress.output`(seo_title/slug/meta_description/focus_keyword/tags), `wordpress.issues`
+- 이 폴더는 kmompicks 저장소에서 `python src/publish_wp.py <폴더>`로 워드프레스 임시글 업로드 가능
+- 딥픽 모드: 워드프레스·네이버 모두 `[케이맘 딥픽]` 섹션 필수 (궁금증 장면 → 알고 보니 → 흔한 오해 vs 실제 → 우리 집 실천법)
+- 네이버는 워드프레스와 유사도(글자 5-gram) 12% 미만, 15자 이상 같은 문장 반복 금지
+- 네이버 블로그는 공식 글쓰기 API가 없어 자동 업로드하지 않음: `2_naver.txt`를 스마트에디터에 붙여 넣고 임시저장
 - 과장 금지: 실제로 한 범위·경험만 서술
 - 회사 PC 관련 내용은 사내 규정 위반으로 오해받지 않도록 표현에 주의
+- 개인 실명(`private_names`)은 어떤 결과물에도 쓰지 않음

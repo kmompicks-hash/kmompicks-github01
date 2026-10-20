@@ -1,0 +1,214 @@
+<!--
+  SEO Title       : 46세 워킹맘의 VS Code & Git 설치 성공기 (회사-집 동기화 노하우)
+  Meta Description: 회사 PC VS Code에 Git이 없어 직접 설치하고, 'error: no action specified' 에러를 한 줄씩 입력해 해결한 뒤 GitHub로 회사-집 동기화까지 마친 46세 워킹맘의 실전 기록과 초보용 Git 설정 팁입니다.
+  Slug            : vscode-git-install-working-mom-sync
+  Focus Keyword   : VS Code Git 설치
+  Tags            : VS Code Git 설치, Git 초기 설정, GitHub 동기화, 워킹맘 부업, AI 자동화, 코딩 초보
+-->
+
+<p>VS Code Git 설치,<br>
+저한테는 그냥 '설치 버튼 몇 번'일 줄 알았어요.<br>
+그런데 회사 컴퓨터에서 빨간 에러를 만났답니다.</p>
+<p>저는 46살, 회사 다니며 아이 키우는 워킹맘이에요.<br>
+퇴근 후 시간을 쪼개 케이맘픽스 자동화를 만들고 있는데,<br>
+회사 PC와 집 PC에서 같은 파일로 이어서 작업하는 게 첫 숙제였어요.</p>
+<p>이 글은 강의가 아니라 오늘 처음 해 본 초보의 기록이에요.<br>
+막혔던 지점과 풀었던 방법을 있는 그대로 적어 둘게요.</p>
+
+<div class="kmom-summary" style="border:2px solid #f3c6c6;border-radius:12px;padding:16px 20px;margin:24px 0;">
+<p><strong>📌 한눈에 보기</strong></p>
+<ul>
+<li>VS Code는 편집기일 뿐, Git은 따로 설치해야 소스 제어 기능이 동작합니다.</li>
+<li>'error: no action specified'는 복사한 명령어 두 줄이 한 줄로 붙어 입력되면서 생겼습니다.</li>
+<li>명령어를 한 줄씩 입력하고 Enter를 누르자 user.name과 user.email 등록이 바로 끝났습니다.</li>
+<li>GitHub 저장소는 비공개(Private)로 바꾼 뒤 올려야 수익 전략과 미발행 원고가 지켜집니다.</li>
+<li>회사-집 동기화의 핵심 습관은 '시작할 땐 pull, 끝날 땐 push' 하나입니다.</li>
+</ul>
+</div>
+
+<nav class="kmom-toc" aria-label="목차" style="background:#fafafa;border-radius:12px;padding:16px 20px;margin:24px 0;">
+<p><strong>목차</strong></p>
+<ol>
+<li><a href="#sec-1">VS Code Git 설치, 왜 필요했을까요?</a></li>
+<li><a href="#sec-2">1단계: 회사 PC에 Git 설치하기</a>
+<ol>
+<li><a href="#sec-2-1">설치 순서</a></li>
+<li><a href="#sec-2-2">설치 후 VS Code를 꼭 다시 켜세요</a></li>
+</ol>
+</li>
+<li><a href="#sec-3">2단계: error: no action specified 해결</a>
+<ol>
+<li><a href="#sec-3-1">원인: 두 줄이 한 줄로 붙었다</a></li>
+<li><a href="#sec-3-2">해결: 한 줄씩, 천천히</a></li>
+</ol>
+</li>
+<li><a href="#sec-4">3단계: 초보자를 위한 Git 초기 설정 팁 5가지</a></li>
+<li><a href="#sec-5">4단계: GitHub로 회사-집 동기화하기</a>
+<ol>
+<li><a href="#sec-5-1">처음 올릴 때 브라우저 로그인 창이 떠요</a></li>
+<li><a href="#sec-5-2">저장소는 비공개로 바꾼 뒤 올리세요</a></li>
+</ol>
+</li>
+<li><a href="#sec-6">[케이맘 딥픽] VS Code, Git, GitHub는 뭐가 다를까?</a>
+<ol>
+<li><a href="#sec-6-1">알고 보니: 세 가지는 역할이 전혀 달라요</a></li>
+<li><a href="#sec-6-2">흔한 오해 vs 실제</a></li>
+<li><a href="#sec-6-3">우리 집 실천법</a></li>
+</ol>
+</li>
+<li><a href="#faq">자주 묻는 질문</a></li>
+</ol>
+</nav>
+
+<h2 id="sec-1">VS Code Git 설치, 왜 필요했을까요?</h2>
+<p>회사에서 쓰던 글을 퇴근 후 집에서 이어 쓰려면 두 컴퓨터의 파일이 늘 같아야 합니다. USB나 메일로 파일을 옮기다 보면 어느 쪽이 최신인지 헷갈리기 쉬워서, 변경 기록을 자동으로 맞춰 주는 Git과 GitHub를 쓰기로 했습니다.</p>
+<p>문제는 집 PC에서는 잘 되던 VS Code 소스 제어 탭이 회사 PC에서는 'Git을 찾을 수 없다'는 메시지만 보여 줬다는 점입니다.</p>
+<ul>
+<li>추천: 회사와 집 두 곳에서 같은 블로그 원고·자동화 파일을 다루는 분</li>
+<li>비추천: 한 대의 컴퓨터에서만 작업하고 백업도 필요 없는 분</li>
+</ul>
+
+<h2 id="sec-2">1단계: 회사 PC에 Git 설치하기</h2>
+<p>원인은 단순했습니다. 집 PC에는 예전에 설치해 둔 Git이 있었고, 회사 PC에는 없었습니다. VS Code는 설치된 Git을 불러다 쓰는 프로그램이라 Git이 없으면 소스 제어 기능이 동작하지 않습니다.</p>
+<h3 id="sec-2-1">설치 순서</h3>
+<ol>
+<li>git-scm.com에서 Windows용 Git을 내려받습니다.</li>
+<li>설치 옵션은 특별한 이유가 없으면 기본값(Next)으로 진행합니다.</li>
+<li>설치가 끝나면 VS Code를 완전히 종료했다가 다시 실행합니다.</li>
+</ol>
+<h3 id="sec-2-2">설치 후 VS Code를 꼭 다시 켜세요</h3>
+<p>VS Code는 실행될 때 Git 위치를 확인하기 때문에, 켜 둔 상태에서 Git을 설치하면 여전히 Git을 못 찾을 수 있습니다. 회사 PC는 보안 정책으로 프로그램 설치가 제한될 수 있으니 사내 IT 규정을 먼저 확인하세요.</p>
+
+<h2 id="sec-3">2단계: error: no action specified 해결</h2>
+<p>Git을 설치한 뒤에는 커밋(변경 기록)에 남길 이름과 이메일을 등록해야 합니다. 안내 글에서 명령어 두 줄을 복사해 터미널에 붙여 넣었는데, 돌아온 것은 <code>error: no action specified</code>라는 빨간 글씨였습니다.</p>
+<h3 id="sec-3-1">원인: 두 줄이 한 줄로 붙었다</h3>
+<p>터미널을 다시 살펴보니 두 줄이어야 할 명령어가 줄바꿈 없이 한 줄로 이어져 입력되어 있었습니다. Git은 두 명령이 섞인 한 문장을 받은 셈이라 무엇을 하라는 것인지 이해하지 못했습니다. 웹페이지에서 여러 줄을 복사하면 줄바꿈이 사라지는 경우가 생각보다 흔합니다.</p>
+<h3 id="sec-3-2">해결: 한 줄씩, 천천히</h3>
+<p>한 줄을 입력하고 Enter, 다음 줄을 입력하고 Enter. 이렇게 다시 입력하자 에러 없이 바로 등록됐습니다.</p>
+<pre><code>git config --global user.name "내이름"
+git config --global user.email "내이메일@example.com"
+git config --global --list</code></pre>
+<p>마지막 줄은 확인용입니다. 목록에 user.name과 user.email이 보이면 성공입니다.</p>
+
+<h2 id="sec-4">3단계: 초보자를 위한 Git 초기 설정 팁 5가지</h2>
+<ol>
+<li><strong>명령어는 한 줄씩 입력하고 Enter</strong>: 여러 줄을 한꺼번에 붙여 넣는 것이 에러의 지름길입니다.</li>
+<li><strong>이메일은 GitHub 가입 이메일과 똑같이</strong>: 그래야 GitHub에서 커밋이 내 계정 활동으로 연결됩니다.</li>
+<li><strong>이름에 띄어쓰기가 있으면 큰따옴표로 감싸기</strong>: "Kim Mom"처럼 입력합니다.</li>
+<li><strong>--global은 컴퓨터마다 한 번</strong>: 그 PC 전체에 적용되는 설정이라 회사 PC, 집 PC에서 각각 한 번씩만 하면 됩니다.</li>
+<li><strong>에러 메시지는 그대로 복사해 검색하거나 AI에게 묻기</strong>: 빨간 글씨 자체가 가장 정확한 단서입니다.</li>
+</ol>
+<p>터미널이 어디 있는지부터 막막하다면 VS Code 상단 메뉴의 <strong>터미널 → 새 터미널</strong>을 누르거나, 단축키 Ctrl + `(Esc 아래 키)를 누르면 화면 아래에 입력창이 열립니다.</p>
+
+<h2 id="sec-5">4단계: GitHub로 회사-집 동기화하기</h2>
+<p>설정을 마친 뒤 GitHub 저장소와 연결해 회사 PC와 집 PC가 같은 파일을 보도록 했습니다. 흐름은 네 단계면 충분했습니다.</p>
+<table>
+<thead><tr><th>단계</th><th>언제</th><th>하는 일</th></tr></thead>
+<tbody>
+<tr><td>clone</td><td>처음 한 번</td><td>GitHub 저장소를 내 PC로 내려받기</td></tr>
+<tr><td>pull</td><td>작업 시작 전</td><td>다른 PC에서 한 작업 받아오기</td></tr>
+<tr><td>commit</td><td>작업 중간중간</td><td>변경 내용을 기록으로 남기기</td></tr>
+<tr><td>push</td><td>작업 끝날 때</td><td>내 작업을 GitHub에 올리기</td></tr>
+</tbody>
+</table>
+<p>명령어가 부담스럽다면 VS Code 왼쪽의 소스 제어 아이콘(Ctrl + Shift + G)에서 메시지를 적고 Commit 버튼을 누른 뒤, 동기화 버튼으로 올려도 결과는 같습니다.</p>
+<h3 id="sec-5-1">처음 올릴 때 브라우저 로그인 창이 떠요</h3>
+<p>처음 push하면 터미널에 브라우저에서 인증을 마치라는 안내가 나오고 GitHub 로그인 창이 열립니다. 로그인 후 권한을 허용하면 이후에는 자동으로 연결됩니다. 앞서 등록한 user.name과 user.email은 기록에 남는 이름표일 뿐, GitHub 로그인과는 별개입니다.</p>
+<h3 id="sec-5-2">저장소는 비공개로 바꾼 뒤 올리세요</h3>
+<p>올리기 직전에 확인해 보니 제 저장소가 공개(Public)로 되어 있었습니다. 블로그 운영 지침과 아직 발행하지 않은 원고가 누구에게나 보일 뻔해서, 저장소 Settings → Danger Zone → Change visibility에서 비공개(Private)로 바꾼 뒤 올렸습니다.</p>
+
+<h2 id="sec-6">[케이맘 딥픽] VS Code, Git, GitHub는 뭐가 다를까?</h2>
+<p>'VS Code를 깔았는데 왜 Git이 없다고 하지?' 이 질문이 오늘의 시작이었습니다. 이름이 비슷하게 묶여 다니는 세 가지가 각각 무슨 일을 하는지 궁금해서 찾아봤습니다.</p>
+<h3 id="sec-6-1">알고 보니: 세 가지는 역할이 전혀 달라요</h3>
+<ul>
+<li><strong>VS Code</strong>: 글과 코드를 쓰는 편집기입니다. 집으로 치면 책상입니다.</li>
+<li><strong>Git</strong>: 내 컴퓨터 안에서 파일의 변경 기록을 남기는 프로그램입니다. 책상 서랍 속 일기장에 가깝습니다.</li>
+<li><strong>GitHub</strong>: Git 기록을 인터넷에 보관하는 서비스입니다. 회사와 집 어디서든 열어 보는 공용 보관함입니다.</li>
+</ul>
+<h3 id="sec-6-2">흔한 오해 vs 실제</h3>
+<p><strong>오해</strong>: VS Code를 설치하면 Git도 함께 설치된다. <strong>실제</strong>: Windows에서는 Git을 따로 설치해야 합니다.</p>
+<p><strong>오해</strong>: Git과 GitHub는 같은 것이다. <strong>실제</strong>: Git은 내 PC의 프로그램, GitHub는 그 기록을 올려 두는 온라인 서비스입니다.</p>
+<p><strong>오해</strong>: git config로 이메일을 등록하면 GitHub에 로그인된다. <strong>실제</strong>: 기록에 붙는 이름표일 뿐이고, 로그인은 처음 push할 때 브라우저에서 따로 합니다.</p>
+<h3 id="sec-6-3">우리 집 실천법</h3>
+<p>새 컴퓨터에서는 Git 설치 → 이름·이메일 등록(한 줄씩) → clone 순서로 한 번만 준비합니다. 그다음부터는 작업 시작 전에 pull, 작업 끝에 commit과 push를 하는 것이 전부입니다.</p>
+
+<h2 id="faq">자주 묻는 질문</h2>
+<h3>Q. VS Code를 설치하면 Git도 같이 설치되나요?</h3>
+<p>아니요. VS Code와 Git은 별개 프로그램이라 Git은 git-scm.com에서 따로 설치해야 합니다. 설치 후에는 VS Code를 다시 실행하세요.</p>
+<h3>Q. error: no action specified 에러는 왜 나나요?</h3>
+<p>제 경우에는 복사한 명령어 두 줄이 한 줄로 붙어 입력된 것이 원인이었습니다. 명령어를 한 줄씩 다시 입력하자 해결됐습니다.</p>
+<h3>Q. 회사 PC와 집 PC에서 같은 GitHub 계정을 써도 되나요?</h3>
+<p>네. 각 PC에서 이름·이메일 설정을 한 번씩 하고 같은 저장소를 clone하면 됩니다. 회사 PC 사용은 사내 규정을 먼저 확인하세요.</p>
+<h3>Q. GitHub 저장소는 공개와 비공개 중 무엇이 좋나요?</h3>
+<p>블로그 운영 지침, 미발행 원고, 제휴 링크처럼 남에게 보이면 곤란한 내용이 있다면 비공개(Private)를 권합니다. 비공개 저장소도 개인 계정에서 무료로 만들 수 있습니다.</p>
+
+<h2 id="conclusion">마무리</h2>
+<p>한 줄로 정리하면, Git 설정 에러는 거창한 기술이 아니라 명령어를 한 줄씩 천천히 입력하는 것으로 풀렸습니다. 육아도 회사 일도 결국 그렇게 해 왔던 것처럼요.</p>
+<p>개발자 남편도 코딩 학원도 없지만, 오늘로 회사와 집을 잇는 작업 환경이 준비됐습니다. 다음에는 이 환경으로 만든 첫 제품 리뷰를 정리해 보겠습니다. 여러분의 '첫 에러' 경험도 댓글로 들려주세요.</p>
+
+<p class="kmom-disclosure kmom-disclosure--bottom" style="font-size:14px;color:#666;background:#f7f7f7;padding:10px 14px;border-radius:8px;">이 글은 협찬이나 제휴 링크 없이 직접 경험한 내용을 바탕으로 작성했습니다.</p>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "46세 워킹맘의 VS Code & Git 설치 성공기 (회사-집 동기화 노하우)",
+      "description": "회사 PC VS Code에 Git이 없어 직접 설치하고, 'error: no action specified' 에러를 한 줄씩 입력해 해결한 뒤 GitHub로 회사-집 동기화까지 마친 46세 워킹맘의 실전 기록과 초보용 Git 설정 팁입니다.",
+      "keywords": "VS Code Git 설치, Git 초기 설정, GitHub 동기화, 워킹맘 부업, AI 자동화, 코딩 초보",
+      "author": {
+        "@type": "Person",
+        "name": "케이맘",
+        "url": "https://kmompicks.com"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "케이맘픽스",
+        "url": "https://kmompicks.com"
+      },
+      "mainEntityOfPage": "https://kmompicks.com/vscode-git-install-working-mom-sync/",
+      "datePublished": "2026-10-20",
+      "dateModified": "2026-10-20",
+      "inLanguage": "ko-KR"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "VS Code를 설치하면 Git도 같이 설치되나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "아니요. VS Code와 Git은 별개 프로그램이라 Git은 git-scm.com에서 따로 설치해야 합니다. 설치 후에는 VS Code를 다시 실행하세요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "error: no action specified 에러는 왜 나나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "제 경우에는 복사한 명령어 두 줄이 한 줄로 붙어 입력된 것이 원인이었습니다. 명령어를 한 줄씩 다시 입력하자 해결됐습니다."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "회사 PC와 집 PC에서 같은 GitHub 계정을 써도 되나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "네. 각 PC에서 이름·이메일 설정을 한 번씩 하고 같은 저장소를 clone하면 됩니다. 회사 PC 사용은 사내 규정을 먼저 확인하세요."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "GitHub 저장소는 공개와 비공개 중 무엇이 좋나요?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "블로그 운영 지침, 미발행 원고, 제휴 링크처럼 남에게 보이면 곤란한 내용이 있다면 비공개(Private)를 권합니다. 비공개 저장소도 개인 계정에서 무료로 만들 수 있습니다."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>

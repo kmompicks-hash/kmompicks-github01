@@ -1,0 +1,20 @@
+{
+  "input": {
+    "topic": "46세 워킹맘, 개발자 남편 없이 회사 컴퓨터에 AI 자동화 구축하려다 터미널 에러 폭탄 맞은 사연",
+    "info": "회사 PC VS Code에 Git 미설치 → Git 설치 → git config 명령어 두 줄이 한 줄로 붙어 'error: no action specified' → 한 줄씩 재입력해 user.name/user.email 등록 → GitHub 동기화 완료",
+    "experience": "터미널 여는 법을 몰라 메뉴 위치부터 배움. GitHub 저장소가 공개 상태라 비공개로 바꾼 뒤 push. 첫 push 때 브라우저 로그인 인증. VS Code 소스 제어 패널의 Commit 버튼으로 커밋.",
+    "mode": "deeppick",
+    "product_key": null,
+    "category": "K-Mom 인사이트"
+  },
+  "wordpress": {
+    "output": {
+      "seo_title": "46세 워킹맘의 VS Code & Git 설치 성공기 (회사-집 동기화 노하우)",
+      "slug": "vscode-git-install-working-mom-sync",
+      "meta_description": "회사 PC VS Code에 Git이 없어 직접 설치하고, 'error: no action specified' 에러를 한 줄씩 입력해 해결한 뒤 GitHub로 회사-집 동기화까지 마친 46세 워킹맘의 실전 기록과 초보용 Git 설정 팁입니다.",
+      "focus_keyword": "VS Code Git 설치",
+      "tags": ["VS Code Git 설치", "Git 초기 설정", "GitHub 동기화", "워킹맘 부업", "AI 자동화", "코딩 초보"]
+    },
+    "issues": []
+  }
+}
