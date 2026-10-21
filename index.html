@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kmom Picks Mobile Controller</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+        body { font-family: 'Pretendard', sans-serif; background-color: #0b0f19; color: #f3f4f6; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-between p-4 max-w-md mx-auto">
+
+    <!-- Header -->
+    <header class="w-full flex items-center justify-between py-4 border-b border-gray-800 mb-6">
+        <div class="flex items-center space-x-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-indigo-500 flex items-center justify-center shadow-lg shadow-purple-500/30">
+                <i class="fa-solid fa-bolt text-white text-lg"></i>
+            </div>
+            <div>
+                <h1 class="font-bold text-lg tracking-tight text-white">Kmom Picks</h1>
+                <p class="text-xs text-purple-400 font-medium">Mobile Controller</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2 bg-gray-900 border border-gray-800 px-3 py-1.5 rounded-full">
+            <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span class="text-xs text-gray-300 font-medium">Claude Ready</span>
+        </div>
+    </header>
+
+    <!-- Main Controller Card -->
+    <main class="w-full flex-1 flex flex-col space-y-6">
+        
+        <!-- Topic Input Section -->
+        <div class="bg-gray-900/80 border border-gray-800/80 rounded-2xl p-5 shadow-xl backdrop-blur-md">
+            <div class="flex items-center justify-between mb-3">
+                <label class="text-sm font-semibold text-gray-200 flex items-center space-x-2">
+                    <i class="fa-regular fa-lightbulb text-amber-400"></i>
+                    <span>오늘의 주제 / 아이디어</span>
+                </label>
+                <button onclick="startVoiceInput()" class="text-xs text-gray-400 hover:text-purple-400 bg-gray-800 px-2.5 py-1 rounded-lg border border-gray-700 transition flex items-center space-x-1.5">
+                    <i class="fa-solid fa-microphone text-purple-400"></i>
+                    <span>음성 입력</span>
+                </button>
+            </div>
+            <textarea id="topicInput" rows="3" 
+                class="w-full bg-gray-950 border border-gray-800 rounded-xl p-3.5 text-sm text-gray-100 placeholder-gray-500 focus:outline-none focus:border-purple-500 transition resize-none"
+                placeholder="예: 6세 아이 추천 영양제 내돈내산 비교 및 후기"></textarea>
+        </div>
+
+        <!-- Channel Select Section -->
+        <div class="bg-gray-900/80 border border-gray-800/80 rounded-2xl p-5 shadow-xl">
+            <span class="text-sm font-semibold text-gray-200 block mb-3">포함할 콘텐츠 선택:</span>
+            <div class="grid grid-cols-2 gap-3">
+                <label class="flex items-center space-x-3 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer hover:border-purple-500/50 transition">
+                    <input type="checkbox" id="chkWp" checked class="w-4 h-4 text-purple-600 rounded bg-gray-900 border-gray-700 focus:ring-purple-500">
+                    <span class="text-xs font-medium text-gray-300">워드프레스 포스팅</span>
+                </label>
+                <label class="flex items-center space-x-3 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer hover:border-purple-500/50 transition">
+                    <input type="checkbox" id="chkNaver" checked class="w-4 h-4 text-purple-600 rounded bg-gray-900 border-gray-700 focus:ring-purple-500">
+                    <span class="text-xs font-medium text-gray-300">네이버 블로그</span>
+                </label>
+                <label class="flex items-center space-x-3 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer hover:border-purple-500/50 transition">
+                    <input type="checkbox" id="chkShort" checked class="w-4 h-4 text-purple-600 rounded bg-gray-900 border-gray-700 focus:ring-purple-500">
+                    <span class="text-xs font-medium text-gray-300">숏폼 대본 (쇼츠/릴스)</span>
+                </label>
+                <label class="flex items-center space-x-3 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer hover:border-purple-500/50 transition">
+                    <input type="checkbox" id="chkCard" checked class="w-4 h-4 text-purple-600 rounded bg-gray-900 border-gray-700 focus:ring-purple-500">
+                    <span class="text-xs font-medium text-gray-300">인스타 카드뉴스</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Action Button -->
+        <button onclick="generateCommand()" class="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-purple-600/30 transition transform active:scale-95 flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-terminal text-lg"></i>
+            <span>CLI 명령어 자동 생성하기</span>
+        </button>
+
+        <!-- Result / Output Modal or Box -->
+        <div id="resultBox" class="hidden bg-gray-900 border border-purple-500/40 rounded-2xl p-4 shadow-2xl">
+            <div class="flex items-center justify-between mb-2">
+                <span class="text-xs font-bold text-purple-400 uppercase tracking-wider">생성된 CLI 명령어</span>
+                <button onclick="copyCommand()" class="text-xs bg-purple-600 hover:bg-purple-500 text-white px-3 py-1 rounded-lg transition font-medium">
+                    <i class="fa-regular fa-copy mr-1"></i> 복사하기
+                </button>
+            </div>
+            <div id="commandOutput" class="bg-gray-950 p-3 rounded-xl text-xs font-mono text-gray-300 break-all select-all border border-gray-800"></div>
+        </div>
+
+    </main>
+
+    <!-- Footer Guide -->
+    <footer class="w-full text-center py-4 mt-6 border-t border-gray-800/80">
+        <p class="text-xs text-gray-400">사파리/크롬 메뉴에서 <span class="text-purple-400 font-semibold">'홈 화면에 추가'</span>를 누르시면 앱처럼 연결됩니다.</p>
+    </footer>
+
+    <!-- Toast Message -->
+    <div id="toast" class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-xs px-4 py-2.5 rounded-full shadow-2xl opacity-0 pointer-events-none transition duration-300 border border-gray-700">
+        클립보드에 복사되었습니다!
+    </div>
+
+    <script>
+        function generateCommand() {
+            const topic = document.getElementById('topicInput').value.trim();
+            if(!topic) {
+                alert('오늘의 주제나 아이디어를 입력해주세요!');
+                return;
+            }
+            const wp = document.getElementById('chkWp').checked;
+            const naver = document.getElementById('chkNaver').checked;
+            const short = document.getElementById('chkShort').checked;
+            const card = document.getElementById('chkCard').checked;
+
+            let channels = [];
+            if(wp) channels.push("워드프레스");
+            if(naver) channels.push("네이버블로그");
+            if(short) channels.push("숏폼대본");
+            if(card) channels.push("카드뉴스");
+
+            const cmd = `claude -p "케이맘픽스 주제: ${topic} / 생성 채널: ${channels.join(', ')} 에 맞춰 마스터 지침(RULE.md) 기반 콘텐츠 5종 세트를 즉시 작성해줘."`;
+            
+            document.getElementById('commandOutput').innerText = cmd;
+            document.getElementById('resultBox').classList.remove('hidden');
+            showToast('CLI 명령어가 생성되었습니다!');
+        }
+
+        function copyCommand() {
+            const text = document.getElementById('commandOutput').innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('클립보드에 복사되었습니다!');
+            });
+        }
+
+        function startVoiceInput() {
+            if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                alert('이 브라우저는 음성 입력을 지원하지 않습니다. 텍스트로 직접 입력해 주세요.');
+                return;
+            }
+            const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+            const recognition = new SpeechRecognition();
+            recognition.lang = 'ko-KR';
+            recognition.start();
+            
+            showToast('음성 인식을 시작합니다...');
+
+            recognition.onresult = function(event) {
+                const speechToText = event.results[0][0].transcript;
+                document.getElementById('topicInput').value = speechToText;
+                showToast('음성 입력이 완료되었습니다!');
+            };
+
+            recognition.onerror = function() {
+                showToast('음성 인식에 실패했습니다.');
+            };
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            toast.innerText = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => {
+                toast.classList.add('opacity-0');
+            }, 2500);
+        }
+    </script>
+</body>
+</html>
