@@ -1,0 +1,48 @@
+/* 케이맘픽스 이미지 공통 스타일 — make_images.ps1 이 Edge 로 캡처해 PNG 로 만든다 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+:root {
+  --bg: #f5f2ed;
+  --paper: #fffdf9;
+  --ink: #23262b;
+  --sub: #5f6368;
+  --line: #ddd6cc;
+  --accent: #a8754a;
+  --accent-soft: #eadfd2;
+  --ok: #4f8a5b;
+  --ok-soft: #e3efe5;
+  --warn: #c0533f;
+  --warn-soft: #f6e1dc;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: Pretendard, 'Malgun Gothic', sans-serif;
+  letter-spacing: -0.02em;
+  word-break: keep-all;
+}
+
+.frame { position: absolute; inset: 0; padding: 72px; display: flex; flex-direction: column; }
+.kicker { display: flex; align-items: center; gap: 16px; color: var(--accent); font-weight: 700; font-size: 22px; letter-spacing: .18em; }
+.kicker::before { content: ''; width: 36px; height: 2px; background: var(--accent); }
+.page { margin-left: auto; letter-spacing: .04em; font-size: 26px; color: var(--sub); }
+.page b { color: var(--ink); }
+.footer { margin-top: auto; border-top: 1px solid var(--line); padding-top: 28px; display: flex; justify-content: space-between; font-size: 22px; color: var(--sub); }
+.brand { font-weight: 800; letter-spacing: .2em; color: var(--ink); }
+.brand span { color: var(--accent); }
+
+.title { font-size: 64px; font-weight: 800; line-height: 1.25; }
+.lead { font-size: 30px; color: var(--sub); line-height: 1.5; }
+.accent { color: var(--accent); }
+.circle { position: absolute; border-radius: 50%; background: var(--accent-soft); }
+.ring { position: absolute; border-radius: 50%; border: 1.5px solid var(--accent); opacity: .5; }
+
+.card { background: var(--paper); border: 1px solid var(--line); border-radius: 24px; padding: 28px 32px; }
+.pill { display: inline-block; padding: 6px 16px; border-radius: 999px; font-size: 20px; font-weight: 700; }
+.pill.ok { background: var(--ok-soft); color: var(--ok); }
+.pill.warn { background: var(--warn-soft); color: var(--warn); }
+.pill.mute { background: #ececec; color: var(--sub); }
+.num { font-size: 120px; font-weight: 800; color: var(--accent); line-height: 1; }

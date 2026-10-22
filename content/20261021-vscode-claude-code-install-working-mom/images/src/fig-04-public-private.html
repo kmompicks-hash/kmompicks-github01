@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="kmom-size" content="1200x620">
+<link rel="stylesheet" href="../../../../tools/image-kit/kmom.css">
+<style>
+  .cols { margin-top: 40px; display: grid; grid-template-columns: 1fr 1fr; gap: 28px; flex: 1; }
+  .col { background: var(--paper); border: 1px solid var(--line); border-radius: 24px; padding: 32px 34px; display: flex; flex-direction: column; }
+  .col h3 { font-size: 32px; display: flex; align-items: center; gap: 12px; }
+  .col .what { margin-top: 20px; font-size: 23px; line-height: 1.8; color: var(--ink); }
+  .col .res { margin-top: auto; border-radius: 16px; padding: 18px 22px; font-size: 23px; font-weight: 700; }
+  .pub .res { background: var(--ok-soft); color: var(--ok); }
+  .pri .res { background: var(--warn-soft); color: var(--warn); }
+  .pub { border: 2.5px solid var(--ok); }
+</style></head>
+<body>
+  <div class="frame" style="padding:56px 64px 48px">
+    <div class="kicker">깃허브 무료 계정 기준</div>
+    <div class="title" style="font-size:44px;margin-top:18px">보여 줄 건 <span class="accent">공개</span>, 숨길 건 <span class="accent">비공개</span></div>
+    <div class="cols">
+      <div class="col pub">
+        <h3>🌐 Public (공개)</h3>
+        <div class="what">· 폰 리모컨 웹페이지 (index.html)<br>· 누가 봐도 괜찮은 파일만<br>· 비밀번호·API 키 절대 금지</div>
+        <div class="res">✓ GitHub Pages 웹페이지 열림</div>
+      </div>
+      <div class="col pri">
+        <h3>🔒 Private (비공개)</h3>
+        <div class="what">· 운영 지침, 제휴 링크<br>· 아직 발행 안 한 원고<br>· 자동화 프로그램</div>
+        <div class="res">✕ 무료 계정은 웹페이지(Pages) 사용 불가</div>
+      </div>
+    </div>
+  </div>
+</body></html>

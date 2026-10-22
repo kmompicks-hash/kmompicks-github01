@@ -1,0 +1,254 @@
+<!--
+  SEO Title       : VS Code 클로드 코드 설치, 컴퓨터 까막눈 46세 워킹맘의 첫 도전기
+  Meta Description: 터미널이 무서웠던 46세 워킹맘이 VS Code와 클로드 코드(Claude Code)를 설치하고, 깃허브 Public/Private 설정을 헷갈려 웹페이지가 제대로 안 보이던 문제를 풀어 스마트폰 웹앱 리모컨까지 만든 초보용 실전 기록입니다.
+  Slug            : vscode-claude-code-install-beginner
+  Focus Keyword   : VS Code 클로드 코드 설치
+  Tags            : VS Code 클로드 코드 설치, Claude Code 로그인, VS Code 설치 옵션, 깃허브 Public Private, GitHub Pages, 워킹맘 AI 자동화, 코딩 초보
+-->
+
+<p style="display:inline-block;background:#eadfd2;color:#8a5a33;font-weight:700;font-size:14px;padding:4px 12px;border-radius:999px;">46세 워킹맘의 AI 자동화 도전기 · 시리즈 1탄</p>
+
+<p>여러분, 처음 검은 화면 띄웠을 때 진짜 식은땀 났잖아요?</p>
+<p>저는 그 화면을 보자마자<br>
+<strong>'이건 개발자들 세상이구나'</strong> 하고 노트북을 덮을 뻔했어요.</p>
+<p>저는 46살, 회사 다니면서 아이 키우는 워킹맘이에요.<br>
+2년 동안 내돈내산 리뷰를 쌓아 온 케이맘픽스를 덜 힘들게 운영하고 싶어서,<br>
+퇴근 후 시간을 쪼개 AI 자동화를 배우기 시작했어요.</p>
+<p>이 글은 <strong>VS Code 클로드 코드 설치</strong>부터 깃허브 설정 실수, 스마트폰 리모컨 완성까지<br>
+제가 실제로 해 본 것만 솔직하게 적은 기록이에요.</p>
+
+<div class="kmom-summary" style="border:2px solid #e3c9b0;background:#fffaf4;border-radius:16px;padding:20px 24px;margin:28px 0;">
+<p style="margin:0 0 10px;font-size:17px;"><strong>📌 바쁘신 분들을 위한 한눈에 보기</strong></p>
+<ul style="margin:0;padding-left:20px;line-height:1.9;">
+<li><strong>터미널</strong>은 글자로 "이거 해 줘"라고 부탁하는 창일 뿐이에요.</li>
+<li>VS Code 설치 체크박스는 <strong>'PATH에 추가'만 꼭</strong> 켜면 돼요.</li>
+<li>클로드 코드 로그인 때 <strong>브라우저가 열리는 건 정상</strong>이에요. 승인만 누르면 끝!</li>
+<li>무료 깃허브는 <strong>공개(Public) 저장소</strong>여야 웹페이지가 떠요.</li>
+<li>보여 줄 것은 공개, 숨길 것은 비공개로 <strong>저장소를 나누면</strong> 해결돼요.</li>
+</ul>
+</div>
+
+<nav class="kmom-toc" aria-label="목차" style="background:#f7f5f1;border-radius:16px;padding:18px 24px;margin:28px 0;">
+<p style="margin:0 0 8px;"><strong>목차</strong></p>
+<ol style="margin:0;padding-left:20px;line-height:1.9;">
+<li><a href="#sec-1">VS Code와 검은 화면, 처음 마주한 날</a></li>
+<li><a href="#sec-2">VS Code 설치: 체크박스 5개 정리</a></li>
+<li><a href="#sec-3">클로드 코드 설치와 로그인 승인</a></li>
+<li><a href="#sec-4">깃허브 Public/Private 헷갈려 웹페이지가 깨진 사연</a></li>
+<li><a href="#sec-5">스마트폰 웹앱 리모컨 완성</a></li>
+<li><a href="#sec-6">[케이맘 딥픽] 비공개면 왜 웹페이지가 안 뜰까?</a></li>
+<li><a href="#faq">자주 묻는 질문</a></li>
+</ol>
+</nav>
+
+<h2 id="sec-1">VS Code와 검은 화면, 처음 마주한 날</h2>
+<p>VS Code(Visual Studio Code)는 마이크로소프트가 무료로 배포하는 편집기예요.<br>
+열어 보니 <strong>메모장에 폴더 목록과 버튼 몇 개가 붙은 모양</strong>이었어요.</p>
+<p>진짜 무서웠던 건 화면 아래쪽의 검은 창, <strong>터미널</strong>이었어요.<br>
+커서만 깜빡이고, 뭘 쳐야 하는지 아무 안내가 없었거든요.</p>
+
+<figure style="margin:28px 0;">
+<img src="images/fig-01-terminal.png" alt="VS Code 화면 아래쪽 터미널 위치와 여는 단축키 안내" width="1200" height="750" style="border-radius:12px;">
+<figcaption style="text-align:center;font-size:14px;color:#777;margin-top:8px;">VS Code 아래쪽 검은 칸이 터미널이에요. Ctrl + ` 로 열고 닫아요.</figcaption>
+</figure>
+
+<p>그런데 써 보니 터미널은 <strong>마우스 대신 글자로 부탁하는 창</strong>이었어요.<br>
+제가 직접 친 명령은 손에 꼽을 만큼 적었고, 대부분은 클로드 코드가 대신 해 줬어요.</p>
+
+<div style="background:#eef5ef;border-left:5px solid #4f8a5b;border-radius:10px;padding:16px 20px;margin:24px 0;">
+<p style="margin:0;"><strong>💡 터미널 여는 법</strong><br>
+상단 메뉴 <strong>터미널 → 새 터미널</strong>, 또는 단축키 <strong>Ctrl + `</strong>(Esc 아래 키).<br>
+맨 앞의 <code>PS C:\Users\...&gt;</code>는 '지금 내가 있는 폴더'를 알려 주는 표시예요.</p>
+</div>
+
+<h2 id="sec-2">VS Code 설치: 체크박스 5개 정리</h2>
+<p>공식 사이트(code.visualstudio.com)에서 Windows용 설치 파일을 받아 실행하면,<br>
+중간에 <strong>'추가 작업 선택'</strong> 화면이 나와요.</p>
+<p>저는 여기서 체크박스 다섯 개를 보고 한참 멈춰 있었어요.<br>
+번역 말투라 더 어렵게 느껴지더라고요.</p>
+
+<figure style="margin:28px 0;">
+<img src="images/fig-02-installer-checkbox.png" alt="VS Code 설치 추가 작업 선택 체크박스 5개 추천 설정" width="1200" height="750" style="border-radius:12px;">
+<figcaption style="text-align:center;font-size:14px;color:#777;margin-top:8px;">제가 고른 설정이에요. 'PATH에 추가'만 꼭 켜 두세요.</figcaption>
+</figure>
+
+<h3 id="sec-2-1">항목별 한 줄 설명</h3>
+<ul style="line-height:1.9;">
+<li><strong>바탕 화면 바로 가기</strong>: 아이콘 생성. 기본은 꺼짐, 취향껏</li>
+<li><strong>'Code(으)로 열기' – 파일 메뉴</strong>: 파일 우클릭으로 바로 열기. 기본은 꺼져 있으니 직접 켜기</li>
+<li><strong>'Code(으)로 열기' – 폴더 메뉴</strong>: 폴더째 열기. 기본은 꺼져 있으니 직접 켜기</li>
+<li><strong>지원되는 파일 형식의 편집기로 등록</strong>: 파일 우클릭 '연결 프로그램' 목록에 VS Code가 추가돼요. 기본으로 켜져 있고, 그대로 둬도 괜찮아요</li>
+<li><strong>PATH에 추가</strong>: 터미널에서 code 명령 사용. <strong>꼭 켜기 (기본값)</strong></li>
+</ul>
+<p>'상황에 맞는 메뉴'는 그냥 <strong>마우스 오른쪽 클릭 메뉴</strong>예요.<br>
+알고 나니 대부분 '편하게 해 줄까요?'라는 질문이었어요.</p>
+
+<div style="background:#fbecea;border-left:5px solid #c0533f;border-radius:10px;padding:16px 20px;margin:24px 0;">
+<p style="margin:0;"><strong>⚠️ 회사 PC라면</strong><br>
+프로그램 설치 규정이 있을 수 있어요. 사내 IT 정책을 먼저 확인하세요.</p>
+</div>
+
+<h2 id="sec-3">클로드 코드 설치와 로그인 승인</h2>
+<p>클로드 코드(Claude Code)는 AI 클로드에게 <strong>내 컴퓨터 폴더 안에서 파일을 만들고 고치도록 맡기는 도구</strong>예요.<br>
+쓰려면 Claude 유료 요금제나 API 결제가 필요해서, 저는 요금제부터 확인했어요.</p>
+
+<h3 id="sec-3-1">설치 순서</h3>
+<ol style="line-height:1.9;">
+<li>VS Code 왼쪽 확장(Extensions) 아이콘 클릭, 또는 <strong>Ctrl + Shift + X</strong></li>
+<li>검색창에 <strong>Claude Code</strong> 입력 → 게시자가 <strong>Anthropic</strong>인지 확인 후 설치</li>
+<li>Claude 아이콘과 대화 창이 생기면 성공</li>
+<li>처음 열면 로그인 안내가 나와요</li>
+</ol>
+
+<h3 id="sec-3-2">브라우저 승인 화면에서 당황하지 마세요</h3>
+<p>로그인을 누르면 VS Code가 아니라 <strong>인터넷 브라우저가 새로 열려요.</strong><br>
+저는 '뭘 잘못 눌렀나?' 싶었는데, 원래 이렇게 진행되는 거였어요.</p>
+
+<figure style="margin:28px 0;">
+<img src="images/fig-03-claude-login.png" alt="클로드 코드 로그인 3단계: VS Code에서 로그인, 브라우저에서 승인, VS Code 복귀" width="1200" height="750" style="border-radius:12px;">
+<figcaption style="text-align:center;font-size:14px;color:#777;margin-top:8px;">VS Code → 브라우저에서 승인 → 다시 VS Code. 이 세 단계면 끝이에요.</figcaption>
+</figure>
+
+<p>한 번 승인하면 다음부터는 다시 묻지 않았어요.</p>
+
+<div style="background:#eef5ef;border-left:5px solid #4f8a5b;border-radius:10px;padding:16px 20px;margin:24px 0;">
+<p style="margin:0;"><strong>💡 안전 습관 하나</strong><br>
+승인 버튼을 누르기 전에 주소창이 공식 <strong>claude.ai</strong>(또는 anthropic.com)인지 한 번만 확인하세요.</p>
+</div>
+
+<h2 id="sec-4">깃허브 Public/Private 헷갈려 웹페이지가 깨진 사연</h2>
+<p>클로드 코드와 함께 <strong>스마트폰에서 열어 볼 작은 웹페이지</strong>를 만들었어요.<br>
+이걸 인터넷 주소로 띄우려고 깃허브(GitHub)의 무료 웹페이지 기능, <strong>GitHub Pages</strong>를 쓰기로 했죠.</p>
+
+<h3 id="sec-4-1">증상: 디자인은 사라지고 글자만 줄줄이</h3>
+<p>저장소를 만들 때 <strong>Public(공개)</strong>과 <strong>Private(비공개)</strong> 중 하나를 고르래요.<br>
+블로그 전략이 보일까 봐 겁이 나서 고민 없이 Private를 골랐어요.</p>
+<p>그런데 기대했던 리모컨 화면 대신<br>
+<strong>색깔도 버튼 모양도 없이 글자만 위아래로 줄줄이 나열된 화면</strong>이 보였어요.</p>
+<p>공개·비공개 설정을 이리저리 헷갈리며 한참 헤맨 끝에,<br>
+<strong>저장소를 공개로 바꾸고 Pages를 다시 설정하니</strong> 그제야 제대로 된 화면이 나왔어요.</p>
+
+<div style="background:#eef5ef;border-left:5px solid #4f8a5b;border-radius:10px;padding:16px 20px;margin:24px 0;">
+<p style="margin:0;"><strong>💡 글자만 나열돼 보인다면</strong><br>
+웹페이지의 글자는 불러왔는데 <strong>디자인 파일(CSS·스크립트)을 못 불러왔을 때</strong> 흔히 생기는 모습이에요.<br>
+주소가 <code>아이디.github.io/저장소이름</code> 형태인지 확인하고, 설정 직후라면 몇 분 뒤 새로고침해 보세요.</p>
+</div>
+
+<h3 id="sec-4-2">해결: 저장소를 용도별로 나누기</h3>
+<p>전부 공개로 바꾸는 건 답이 아니었어요. 그래서 이렇게 나눴어요.</p>
+
+<figure style="margin:28px 0;">
+<img src="images/fig-04-public-private.png" alt="깃허브 공개 저장소와 비공개 저장소에 둘 파일 구분" width="1200" height="620" style="border-radius:12px;">
+<figcaption style="text-align:center;font-size:14px;color:#777;margin-top:8px;">웹페이지 파일만 공개 저장소에, 나머지는 비공개 저장소에 두었어요.</figcaption>
+</figure>
+
+<ol style="line-height:1.9;">
+<li>공개로 바꾸기: 저장소 <strong>Settings → 맨 아래 Danger Zone → Change visibility</strong></li>
+<li>웹페이지 켜기: <strong>Settings → Pages</strong>에서 Source는 <strong>Deploy from a branch</strong>, Branch는 <strong>main</strong>으로 고르고 Save</li>
+<li>몇 분 기다리면 주소가 정상으로 열려요</li>
+</ol>
+
+<div style="background:#fbecea;border-left:5px solid #c0533f;border-radius:10px;padding:16px 20px;margin:24px 0;">
+<p style="margin:0;"><strong>⚠️ 공개 저장소에는 절대 넣지 마세요</strong><br>
+비밀번호, API 키, 블로그 관리자 정보. 공개 저장소의 파일은 누구나 볼 수 있어요.</p>
+</div>
+
+<h2 id="sec-5">스마트폰 웹앱 리모컨 완성</h2>
+<p>그렇게 띄운 페이지가 제 <strong>'Kmom Picks Mobile Controller'</strong>예요.<br>
+기능은 단순해요.</p>
+
+<figure style="margin:28px 0;">
+<img src="images/fig-05-remote.png" alt="Kmom Picks 모바일 컨트롤러 화면과 사용 순서 4단계" width="1200" height="750" style="border-radius:12px;">
+<figcaption style="text-align:center;font-size:14px;color:#777;margin-top:8px;">주제 입력 → 콘텐츠 체크 → 명령어 복사 → PC 터미널에 붙여넣기</figcaption>
+</figure>
+
+<ol style="line-height:1.9;">
+<li><strong>주제 입력</strong>: 손이 바쁠 땐 음성 입력 버튼으로 말로 넣어요.</li>
+<li><strong>콘텐츠 체크</strong>: 워드프레스, 네이버 블로그, 숏폼 대본, 인스타 카드뉴스</li>
+<li><strong>명령어 생성</strong>: 클로드 코드에 그대로 넣을 문장이 만들어져요.</li>
+<li><strong>복사 → PC 터미널에 붙여넣기</strong>: 콘텐츠 작업이 시작돼요.</li>
+</ol>
+
+<div style="background:#eef5ef;border-left:5px solid #4f8a5b;border-radius:10px;padding:16px 20px;margin:24px 0;">
+<p style="margin:0;"><strong>💡 터미널에서 claude 명령을 쓰려면</strong><br>
+VS Code 확장만 설치하면 대화 창에서만 쓸 수 있어요. 터미널에 <code>claude</code>를 입력해 쓰려면 <strong>클로드 코드 본체(CLI)를 따로 설치</strong>해야 해요.<br>
+Windows PowerShell에서 <code>irm https://claude.ai/install.ps1 | iex</code> 를 입력하고, 새 터미널에서 <code>claude --version</code>으로 확인하면 돼요.</p>
+</div>
+<p>휴대폰 브라우저 메뉴에서 <strong>'홈 화면에 추가'</strong>를 누르면 앱 아이콘처럼 생겨요.<br>
+아이 재우고 누워서 떠오른 주제를 바로 적어 둘 수 있게 됐어요.</p>
+<p>솔직히 리모컨이 PC를 대신 켜 주지는 않아요.<br>
+그래도 <strong>내 손으로 만든 버튼을 눌러 내 일이 시작된다</strong>는 게 이렇게 짜릿할 줄 몰랐어요.</p>
+
+<h2 id="sec-6">[케이맘 딥픽] 비공개면 왜 웹페이지가 안 뜰까?</h2>
+<p>'파일은 분명 잘 올라가 있는데, 왜 웹페이지가 제대로 안 보이지?'<br>
+글자만 나열된 화면을 몇 번이나 새로고침하다가 궁금해져서 찾아봤어요.</p>
+
+<h3 id="sec-6-1">알고 보니</h3>
+<p>GitHub Pages는 저장소의 파일을 그대로 웹사이트로 보여 주는 기능이에요.<br>
+<strong>무료 계정(GitHub Free)에서는 공개 저장소에서만</strong> 쓸 수 있고, 비공개로 쓰려면 유료 요금제가 필요해요.</p>
+<p>웹사이트는 원래 누구나 보는 것이니, 무료로는 '공개'가 전제라고 이해하면 쉬웠어요.</p>
+
+<h3 id="sec-6-2">흔한 오해 vs 실제</h3>
+<table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:15px;">
+<thead><tr style="background:#f7f5f1;"><th style="padding:12px;border:1px solid #e5ded4;text-align:left;">❌ 흔한 오해</th><th style="padding:12px;border:1px solid #e5ded4;text-align:left;">⭕ 실제</th></tr></thead>
+<tbody>
+<tr><td style="padding:12px;border:1px solid #e5ded4;">비공개 저장소도 Pages를 켜면 나만 보는 웹페이지가 생긴다</td><td style="padding:12px;border:1px solid #e5ded4;">무료 계정은 비공개 저장소로 Pages를 켤 수 없어요</td></tr>
+<tr><td style="padding:12px;border:1px solid #e5ded4;">저장소 하나를 공개하면 내 계정 전체가 공개된다</td><td style="padding:12px;border:1px solid #e5ded4;">공개·비공개는 저장소마다 따로 정해요</td></tr>
+<tr><td style="padding:12px;border:1px solid #e5ded4;">웹페이지만 보이고 저장소 안 파일은 숨겨진다</td><td style="padding:12px;border:1px solid #e5ded4;">공개 저장소는 안의 파일 전체를 누구나 볼 수 있어요</td></tr>
+</tbody>
+</table>
+
+<h3 id="sec-6-3">우리 집 실천법</h3>
+<div style="background:#fffaf4;border:2px dashed #e3c9b0;border-radius:14px;padding:18px 22px;margin:20px 0;">
+<p style="margin:0;">새 저장소를 만들 때 딱 한 가지만 물어봐요.<br>
+<strong>"이 파일을 모르는 사람이 봐도 괜찮을까?"</strong><br>
+괜찮으면 Public, 조금이라도 망설여지면 Private.</p>
+</div>
+
+<h2 id="faq">자주 묻는 질문</h2>
+<h3>Q. VS Code 설치할 때 체크박스는 무엇을 선택해야 하나요?</h3>
+<p>'PATH에 추가'는 꼭 켜 두고, 'Code(으)로 열기' 두 항목은 기본으로 꺼져 있으니 직접 켜 두면 파일과 폴더를 우클릭으로 바로 열 수 있어 편해요. 바탕 화면 아이콘은 취향이고, '지원되는 파일 형식의 편집기로 등록'은 기본으로 켜져 있는데 그대로 둬도 괜찮아요.</p>
+<h3>Q. 클로드 코드 로그인할 때 브라우저가 열리는 게 정상인가요?</h3>
+<p>네. 브라우저에서 Claude 계정으로 로그인하고 승인을 누르면 VS Code가 로그인 상태가 돼요. 주소가 공식 도메인인지 확인하세요.</p>
+<h3>Q. 깃허브 비공개 저장소로 웹페이지를 띄울 수 있나요?</h3>
+<p>무료 계정에서는 안 돼요. GitHub Pages는 무료 계정에서 공개 저장소에서만 쓸 수 있어요. 숨길 파일은 다른 비공개 저장소에 두고, 웹페이지 파일만 공개 저장소에 두는 방법을 권해요.</p>
+<h3>Q. 코딩을 전혀 몰라도 클로드 코드를 쓸 수 있나요?</h3>
+<p>저는 코딩을 배운 적 없이 시작했어요. 원하는 걸 한국어로 설명하면 클로드 코드가 파일을 만들어 줬고, 저는 결과를 확인하고 수정할 점을 말하는 역할이었어요. 다만 유료 요금제가 필요하고, 결과물은 꼭 직접 확인해야 해요.</p>
+
+<h2 id="conclusion">마무리</h2>
+<p>한 줄로 정리하면, <strong>무서운 건 검은 화면이 아니라 '모른다'는 막막함</strong>이었어요.<br>
+체크박스 하나, 승인 버튼 하나씩 뜻을 알고 나니 생각보다 할 만했답니다.</p>
+<p>시리즈 2탄에서는 이 환경을 회사 PC와 집 PC에서 똑같이 이어 쓰려다 만난 <strong>빨간 에러</strong>와,<br>
+그걸 한 줄씩 풀어낸 이야기를 정리할게요.</p>
+<p>여러분은 처음 검은 화면을 띄웠을 때 어떤 기분이셨나요? 댓글로 들려주세요 💬</p>
+
+<p class="kmom-disclosure kmom-disclosure--bottom" style="font-size:14px;color:#666;background:#f7f7f7;padding:10px 14px;border-radius:8px;">이 글은 협찬이나 제휴 링크 없이 직접 경험한 내용을 바탕으로 작성했습니다. (대가 없음)</p>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "BlogPosting",
+      "headline": "VS Code 클로드 코드 설치, 컴퓨터 까막눈 46세 워킹맘의 첫 도전기",
+      "description": "터미널이 무서웠던 46세 워킹맘이 VS Code와 클로드 코드(Claude Code)를 설치하고, 깃허브 Public/Private 설정을 헷갈려 웹페이지가 제대로 안 보이던 문제를 풀어 스마트폰 웹앱 리모컨까지 만든 초보용 실전 기록입니다.",
+      "keywords": "VS Code 클로드 코드 설치, Claude Code 로그인, VS Code 설치 옵션, 깃허브 Public Private, GitHub Pages, 워킹맘 AI 자동화, 코딩 초보",
+      "author": { "@type": "Person", "name": "케이맘", "url": "https://kmompicks.com" },
+      "publisher": { "@type": "Organization", "name": "케이맘픽스", "url": "https://kmompicks.com" },
+      "mainEntityOfPage": "https://kmompicks.com/vscode-claude-code-install-beginner/",
+      "datePublished": "2026-10-21",
+      "dateModified": "2026-10-21",
+      "inLanguage": "ko-KR"
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "VS Code 설치할 때 체크박스는 무엇을 선택해야 하나요?", "acceptedAnswer": { "@type": "Answer", "text": "'PATH에 추가'는 꼭 켜 두고, 'Code(으)로 열기' 두 항목은 기본으로 꺼져 있으니 직접 켜 두면 파일과 폴더를 우클릭으로 바로 열 수 있어 편해요. 바탕 화면 아이콘은 취향이고, '지원되는 파일 형식의 편집기로 등록'은 기본으로 켜져 있는데 그대로 둬도 괜찮아요." } },
+        { "@type": "Question", "name": "클로드 코드 로그인할 때 브라우저가 열리는 게 정상인가요?", "acceptedAnswer": { "@type": "Answer", "text": "네. 브라우저에서 Claude 계정으로 로그인하고 승인을 누르면 VS Code가 로그인 상태가 돼요. 주소가 공식 도메인인지 확인하세요." } },
+        { "@type": "Question", "name": "깃허브 비공개 저장소로 웹페이지를 띄울 수 있나요?", "acceptedAnswer": { "@type": "Answer", "text": "무료 계정에서는 안 돼요. GitHub Pages는 무료 계정에서 공개 저장소에서만 쓸 수 있어요. 숨길 파일은 다른 비공개 저장소에 두고, 웹페이지 파일만 공개 저장소에 두는 방법을 권해요." } },
+        { "@type": "Question", "name": "코딩을 전혀 몰라도 클로드 코드를 쓸 수 있나요?", "acceptedAnswer": { "@type": "Answer", "text": "저는 코딩을 배운 적 없이 시작했어요. 원하는 걸 한국어로 설명하면 클로드 코드가 파일을 만들어 줬고, 저는 결과를 확인하고 수정할 점을 말하는 역할이었어요. 다만 유료 요금제가 필요하고, 결과물은 꼭 직접 확인해야 해요." } }
+      ]
+    }
+  ]
+}
+</script>

@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="kmom-size" content="1200x750">
+<link rel="stylesheet" href="../../../../tools/image-kit/kmom.css">
+<style>
+  .list { margin-top: 30px; display: flex; flex-direction: column; gap: 14px; }
+  .row { display: grid; grid-template-columns: 44px 1fr 150px; align-items: center; gap: 22px; background: var(--paper); border: 1px solid var(--line); border-radius: 18px; padding: 18px 26px; }
+  .box { width: 36px; height: 36px; border-radius: 8px; border: 2.5px solid #b9b2a7; display: flex; align-items: center; justify-content: center; font-size: 24px; font-weight: 800; color: #fff; }
+  .box.on { background: var(--ok); border-color: var(--ok); }
+  .row b { font-size: 25px; display: block; }
+  .row small { font-size: 19px; color: var(--sub); }
+  .row .pill { justify-self: end; font-size: 21px; }
+  .row.must { border: 2.5px solid var(--accent); }
+</style></head>
+<body>
+  <div class="frame" style="padding:56px 64px 48px">
+    <div class="kicker">VS Code 설치 · 추가 작업 선택</div>
+    <div class="title" style="font-size:44px;margin-top:18px">체크 칸 5개, <span class="accent">이렇게 고르세요</span></div>
+    <div class="list">
+      <div class="row"><div class="box on">✓</div><div><b>바탕 화면 바로 가기 만들기</b><small>바탕화면에 아이콘 · 기본 꺼짐</small></div><span class="pill mute">취향</span></div>
+      <div class="row"><div class="box on">✓</div><div><b>'Code(으)로 열기' – 파일 메뉴</b><small>파일 우클릭으로 바로 열기 · 기본 꺼짐</small></div><span class="pill ok">켜기</span></div>
+      <div class="row"><div class="box on">✓</div><div><b>'Code(으)로 열기' – 폴더 메뉴</b><small>폴더 우클릭으로 폴더째 열기 · 기본 꺼짐</small></div><span class="pill ok">켜기</span></div>
+      <div class="row"><div class="box on">✓</div><div><b>지원되는 파일 형식의 편집기로 등록</b><small>'연결 프로그램' 목록에 VS Code 추가 · 기본 켜짐</small></div><span class="pill mute">그대로 OK</span></div>
+      <div class="row must"><div class="box on">✓</div><div><b>PATH에 추가</b><small>터미널에서 code 명령을 쓸 수 있게 해요 · 기본 켜짐</small></div><span class="pill ok" style="background:var(--accent);color:#fff">꼭 켜기</span></div>
+    </div>
+  </div>
+</body></html>

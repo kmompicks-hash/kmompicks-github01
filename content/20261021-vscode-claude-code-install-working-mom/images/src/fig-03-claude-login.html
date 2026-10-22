@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="kmom-size" content="1200x750">
+<link rel="stylesheet" href="../../../../tools/image-kit/kmom.css">
+<style>
+  .steps { margin-top: 48px; display: grid; grid-template-columns: 1fr 60px 1fr 60px 1fr; align-items: stretch; }
+  .step { background: var(--paper); border: 1px solid var(--line); border-radius: 24px; padding: 34px 28px; text-align: center; }
+  .step .n { width: 56px; height: 56px; border-radius: 50%; background: var(--accent); color: #fff; font-size: 28px; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; }
+  .step .ico { font-size: 64px; margin-bottom: 14px; }
+  .step b { display: block; font-size: 28px; margin-bottom: 10px; }
+  .step p { font-size: 21px; color: var(--sub); line-height: 1.5; }
+  .arrow { display: flex; align-items: center; justify-content: center; font-size: 40px; color: var(--accent); }
+  .tip { margin-top: 34px; background: var(--accent-soft); border-radius: 18px; padding: 20px 28px; font-size: 23px; }
+</style></head>
+<body>
+  <div class="frame" style="padding:56px 64px 48px">
+    <div class="kicker">클로드 코드 로그인</div>
+    <div class="title" style="font-size:44px;margin-top:18px">브라우저가 열리는 건 <span class="accent">정상이에요</span></div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div class="ico">🖥️</div><b>VS Code</b><p>Claude Code 에서<br>로그인 클릭</p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">2</div><div class="ico">🌐</div><b>브라우저</b><p>내 Claude 계정 로그인<br>→ <b style="display:inline;font-size:21px;color:var(--accent)">권한 승인</b></p></div>
+      <div class="arrow">→</div>
+      <div class="step"><div class="n">3</div><div class="ico">✅</div><b>VS Code 복귀</b><p>브라우저 닫으면<br>로그인 완료!</p></div>
+    </div>
+    <div class="tip">🔒 승인 전, 주소창이 공식 <b>claude.ai</b> 인지 한 번만 확인하세요</div>
+  </div>
+</body></html>

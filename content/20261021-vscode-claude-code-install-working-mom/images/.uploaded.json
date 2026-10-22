@@ -1,0 +1,32 @@
+{
+    "images/fig-04-public-private.png":  {
+                                             "hash":  "A67E2E46B946FC0196837DB77911DA0648EBB773A092ACADDD13AB254CC55D67",
+                                             "id":  3207,
+                                             "url":  "https://kmompicks.com/wp-content/uploads/2026/10/fig-04-public-private-1.png"
+                                         },
+    "images/fig-01-terminal.png":  {
+                                       "hash":  "82C80AABA3F0D28107A6C4289C1A21CD47198BEE1280084D61E34F262048BB14",
+                                       "id":  3197,
+                                       "url":  "https://kmompicks.com/wp-content/uploads/2026/10/fig-01-terminal.png"
+                                   },
+    "images/fig-05-remote.png":  {
+                                     "hash":  "905891D65A9D14B864894050486D4B0E3AAE3AA627F767771764B0B502749826",
+                                     "id":  3201,
+                                     "url":  "https://kmompicks.com/wp-content/uploads/2026/10/fig-05-remote.png"
+                                 },
+    "images/fig-03-claude-login.png":  {
+                                           "hash":  "F62507233CCCACE88E31D56E7BC21DD2795EAC67BA043D16C8A28349218ADE35",
+                                           "id":  3205,
+                                           "url":  "https://kmompicks.com/wp-content/uploads/2026/10/fig-03-claude-login-1.png"
+                                       },
+    "images/fig-02-installer-checkbox.png":  {
+                                                 "hash":  "B84AFF9BB2CCA1EFDCC10AAFC1FCC56103B60890CF72CEF5C31FA924CF5B369F",
+                                                 "id":  3204,
+                                                 "url":  "https://kmompicks.com/wp-content/uploads/2026/10/fig-02-installer-checkbox-1.png"
+                                             },
+    "images/vscode-claude-code-install-beginner-thumbnail.png":  {
+                                                                     "hash":  "6D8C3D222498CC1A323CE8F4C948A39938AC120EA3178421E4AC61B391B11B5F",
+                                                                     "id":  3202,
+                                                                     "url":  "https://kmompicks.com/wp-content/uploads/2026/10/vscode-claude-code-install-beginner-thumbnail.png"
+                                                                 }
+}
