@@ -55,8 +55,12 @@
         <div class="bg-gray-900/80 border border-gray-800/80 rounded-2xl p-5 shadow-xl">
             <span class="text-sm font-semibold text-gray-200 block mb-3">글 종류:</span>
             <div class="grid grid-cols-2 gap-3" id="typeGroup">
+                <label class="type-opt col-span-2 flex items-center space-x-2 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer transition">
+                    <input type="radio" name="postType" value="coupang" checked class="accent-purple-600">
+                    <span class="text-xs font-medium text-gray-300">🧾 내 쿠팡 리뷰 캡처로 상품 추천글</span>
+                </label>
                 <label class="type-opt flex items-center space-x-2 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer transition">
-                    <input type="radio" name="postType" value="product" checked class="accent-purple-600">
+                    <input type="radio" name="postType" value="product" class="accent-purple-600">
                     <span class="text-xs font-medium text-gray-300">🛍️ 제품 리뷰</span>
                 </label>
                 <label class="type-opt flex items-center space-x-2 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer transition">
@@ -79,7 +83,7 @@
             <div class="flex items-center justify-between mb-3">
                 <span class="text-sm font-semibold text-gray-200 flex items-center space-x-2">
                     <i class="fa-regular fa-images text-sky-400"></i>
-                    <span>내 사진 <span id="photoCount" class="text-gray-500 font-normal">(0장)</span></span>
+                    <span><span id="photoTitle">내 사진</span> <span id="photoCount" class="text-gray-500 font-normal">(0장)</span></span>
                 </span>
                 <label class="text-xs text-gray-200 bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-700 cursor-pointer flex items-center space-x-1.5">
                     <i class="fa-solid fa-plus text-sky-400"></i>
@@ -148,10 +152,10 @@
     </div>
 
     <script>
-        const TYPE_LABELS = { product: '제품 리뷰', travel: '여행 리뷰', daily: '육아·생활 팁', deeppick: '케이맘 딥픽' };
+        const TYPE_LABELS = { coupang: '내 쿠팡 리뷰 캡처 기반 상품 추천', product: '제품 리뷰', travel: '여행 리뷰', daily: '육아·생활 팁', deeppick: '케이맘 딥픽' };
         const MAX_PHOTOS = 20;
-        const MAX_SIDE = 2000;   // 긴 변 기준 최대 픽셀
-        let photos = [];         // { file: File(변환된 jpg), url: 미리보기 주소, memo: '' }
+        const MAX_WIDTH = 1600;  // 가로 기준으로만 줄인다: 세로로 긴 리뷰 캡처도 글자가 읽히게
+        let photos = [];         // { blob: 변환된 jpg, url: 미리보기 주소, memo: '' }
         let batchId = '';        // 한 번에 고른 사진 묶음을 구분하는 짧은 코드
 
         // 명령어가 "..." 로 감싸지므로 큰따옴표와 줄바꿈은 안전한 글자로 바꾼다.
@@ -171,6 +175,13 @@
                 label.classList.toggle('border-gray-800', !on);
             });
             document.getElementById('photoSection').classList.toggle('hidden', type === 'deeppick');
+            const isCoupang = type === 'coupang';
+            document.getElementById('photoTitle').innerText = isCoupang ? '쿠팡 리뷰 캡처' : '내 사진';
+            document.querySelectorAll('.memo').forEach(m => { m.placeholder = memoHint(); });
+        }
+
+        function memoHint() {
+            return currentType() === 'coupang' ? '예: 2024년 3월 구매, 아직 사용 중' : '예: 개봉 직후 구성품';
         }
 
         function todayStamp() {
@@ -188,13 +199,13 @@
                 const img = new Image();
                 const src = URL.createObjectURL(file);
                 img.onload = () => {
-                    const scale = Math.min(1, MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
+                    const scale = Math.min(1, MAX_WIDTH / img.naturalWidth);
                     const canvas = document.createElement('canvas');
                     canvas.width = Math.round(img.naturalWidth * scale);
                     canvas.height = Math.round(img.naturalHeight * scale);
                     canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
                     URL.revokeObjectURL(src);
-                    canvas.toBlob(blob => blob ? resolve(blob) : reject(), 'image/jpeg', 0.85);
+                    canvas.toBlob(blob => blob ? resolve(blob) : reject(), 'image/jpeg', 0.9);
                 };
                 img.onerror = () => { URL.revokeObjectURL(src); reject(); };
                 img.src = src;
@@ -237,7 +248,7 @@
                     </div>
                     <div class="flex-1 min-w-0">
                         <p class="text-[10px] text-gray-500 font-mono truncate mb-1">${photoName(i)}</p>
-                        <input type="text" placeholder="예: 개봉 직후 구성품" class="memo w-full bg-gray-900 border border-gray-800 rounded-lg px-2.5 py-1.5 text-xs text-gray-100 placeholder-gray-600 focus:outline-none focus:border-sky-500">
+                        <input type="text" placeholder="${memoHint()}" class="memo w-full bg-gray-900 border border-gray-800 rounded-lg px-2.5 py-1.5 text-xs text-gray-100 placeholder-gray-600 focus:outline-none focus:border-sky-500">
                     </div>
                     <button class="text-gray-500 hover:text-red-400 px-1" aria-label="사진 빼기"><i class="fa-solid fa-xmark"></i></button>`;
                 const memo = row.querySelector('.memo');
@@ -299,7 +310,8 @@
             if (type !== 'deeppick' && photos.length) {
                 const first = photoName(0), last = photoName(photos.length - 1);
                 const memos = photos.map((p, i) => p.memo.trim() ? `${i + 1}번: ${clean(p.memo)}` : '').filter(Boolean);
-                photoPart = ` / 내 사진 ${photos.length}장: ${first}${photos.length > 1 ? ` ~ ${last.slice(-6)}` : ''}`
+                const what = type === 'coupang' ? '내 쿠팡 리뷰 캡처' : '내 사진';
+                photoPart = ` / ${what} ${photos.length}장: ${first}${photos.length > 1 ? ` ~ ${last.slice(-6)}` : ''}`
                     + ' (PC의 다운로드·카카오톡 받은 파일 폴더에서 찾아 사용)'
                     + (memos.length ? ` / 사진 메모: ${memos.join(', ')}` : '');
             }
