@@ -167,7 +167,7 @@ function Publish-Image([string]$Rel, [string]$Alt) {
 }
 
 foreach ($m in [regex]::Matches($content, '<img\b[^>]*>')) {
-    if ($m.Value -notmatch 'src="(images/[^"]+)"') { continue }
+    if ($m.Value -notmatch 'src="((?:images|photos)/[^"]+)"') { continue }
     $rel = $Matches[1]
     $alt = if ($m.Value -match 'alt="([^"]*)"') { $Matches[1] } else { '' }
     $media = Publish-Image $rel $alt

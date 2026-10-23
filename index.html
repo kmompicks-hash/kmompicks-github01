@@ -51,6 +51,50 @@
                 placeholder="예: 6세 아이 추천 영양제 내돈내산 비교 및 후기"></textarea>
         </div>
 
+        <!-- Post Type Section -->
+        <div class="bg-gray-900/80 border border-gray-800/80 rounded-2xl p-5 shadow-xl">
+            <span class="text-sm font-semibold text-gray-200 block mb-3">글 종류:</span>
+            <div class="grid grid-cols-2 gap-3" id="typeGroup">
+                <label class="type-opt flex items-center space-x-2 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer transition">
+                    <input type="radio" name="postType" value="product" checked class="accent-purple-600">
+                    <span class="text-xs font-medium text-gray-300">🛍️ 제품 리뷰</span>
+                </label>
+                <label class="type-opt flex items-center space-x-2 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer transition">
+                    <input type="radio" name="postType" value="travel" class="accent-purple-600">
+                    <span class="text-xs font-medium text-gray-300">✈️ 여행 리뷰</span>
+                </label>
+                <label class="type-opt flex items-center space-x-2 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer transition">
+                    <input type="radio" name="postType" value="daily" class="accent-purple-600">
+                    <span class="text-xs font-medium text-gray-300">🏠 육아·생활 팁</span>
+                </label>
+                <label class="type-opt flex items-center space-x-2 bg-gray-950 border border-gray-800 p-3 rounded-xl cursor-pointer transition">
+                    <input type="radio" name="postType" value="deeppick" class="accent-purple-600">
+                    <span class="text-xs font-medium text-gray-300">🔎 케이맘 딥픽</span>
+                </label>
+            </div>
+        </div>
+
+        <!-- Photo Section (딥픽이 아닐 때만 보임) -->
+        <div id="photoSection" class="bg-gray-900/80 border border-gray-800/80 rounded-2xl p-5 shadow-xl">
+            <div class="flex items-center justify-between mb-3">
+                <span class="text-sm font-semibold text-gray-200 flex items-center space-x-2">
+                    <i class="fa-regular fa-images text-sky-400"></i>
+                    <span>내 사진 <span id="photoCount" class="text-gray-500 font-normal">(0장)</span></span>
+                </span>
+                <label class="text-xs text-gray-200 bg-gray-800 px-3 py-1.5 rounded-lg border border-gray-700 cursor-pointer flex items-center space-x-1.5">
+                    <i class="fa-solid fa-plus text-sky-400"></i>
+                    <span>사진 추가</span>
+                    <input type="file" id="photoInput" accept="image/*" multiple class="hidden">
+                </label>
+            </div>
+            <p class="text-[11px] text-gray-500 mb-3 leading-relaxed">사진은 크기를 줄이고 위치정보(GPS)를 지운 뒤 <b class="text-gray-400">kmom-날짜-번호.jpg</b> 이름으로 바뀌어요. 사진마다 짧은 메모를 남기면 글에 반영돼요.</p>
+            <div id="photoList" class="space-y-3"></div>
+            <button id="sharePhotosBtn" onclick="sharePhotos()" class="hidden w-full mt-4 bg-sky-600 hover:bg-sky-500 text-white text-sm font-bold py-3 rounded-xl transition flex items-center justify-center space-x-2">
+                <i class="fa-solid fa-share-nodes"></i>
+                <span>사진 보내기 (카톡 나와의 채팅 등)</span>
+            </button>
+        </div>
+
         <!-- Channel Select Section -->
         <div class="bg-gray-900/80 border border-gray-800/80 rounded-2xl p-5 shadow-xl">
             <span class="text-sm font-semibold text-gray-200 block mb-3">포함할 콘텐츠 선택:</span>
@@ -104,12 +148,141 @@
     </div>
 
     <script>
+        const TYPE_LABELS = { product: '제품 리뷰', travel: '여행 리뷰', daily: '육아·생활 팁', deeppick: '케이맘 딥픽' };
+        const MAX_PHOTOS = 20;
+        const MAX_SIDE = 2000;   // 긴 변 기준 최대 픽셀
+        let photos = [];         // { file: File(변환된 jpg), url: 미리보기 주소, memo: '' }
+        let batchId = '';        // 한 번에 고른 사진 묶음을 구분하는 짧은 코드
+
+        // 명령어가 "..." 로 감싸지므로 큰따옴표와 줄바꿈은 안전한 글자로 바꾼다.
+        function clean(text) {
+            return text.replace(/"/g, "'").replace(/\s*\n\s*/g, ' ').trim();
+        }
+
+        function currentType() {
+            return document.querySelector('input[name="postType"]:checked').value;
+        }
+
+        function updateTypeUI() {
+            const type = currentType();
+            document.querySelectorAll('.type-opt').forEach(label => {
+                const on = label.querySelector('input').checked;
+                label.classList.toggle('border-purple-500', on);
+                label.classList.toggle('border-gray-800', !on);
+            });
+            document.getElementById('photoSection').classList.toggle('hidden', type === 'deeppick');
+        }
+
+        function todayStamp() {
+            const d = new Date();
+            return `${d.getFullYear()}${String(d.getMonth() + 1).padStart(2, '0')}${String(d.getDate()).padStart(2, '0')}`;
+        }
+
+        function photoName(index) {
+            return `kmom-${todayStamp()}-${batchId}-${String(index + 1).padStart(2, '0')}.jpg`;
+        }
+
+        // 캔버스로 다시 그려 저장하면 크기가 줄고 GPS 같은 사진 정보(EXIF)가 빠진다.
+        function convertPhoto(file) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                const src = URL.createObjectURL(file);
+                img.onload = () => {
+                    const scale = Math.min(1, MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
+                    const canvas = document.createElement('canvas');
+                    canvas.width = Math.round(img.naturalWidth * scale);
+                    canvas.height = Math.round(img.naturalHeight * scale);
+                    canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+                    URL.revokeObjectURL(src);
+                    canvas.toBlob(blob => blob ? resolve(blob) : reject(), 'image/jpeg', 0.85);
+                };
+                img.onerror = () => { URL.revokeObjectURL(src); reject(); };
+                img.src = src;
+            });
+        }
+
+        async function addPhotos(fileList) {
+            if (!batchId) batchId = Math.random().toString(36).slice(2, 6);
+            const files = Array.from(fileList).slice(0, MAX_PHOTOS - photos.length);
+            if (fileList.length > files.length) showToast(`사진은 최대 ${MAX_PHOTOS}장까지 넣을 수 있어요.`);
+            let failed = 0;
+            for (const file of files) {
+                try {
+                    const blob = await convertPhoto(file);
+                    photos.push({ blob, url: URL.createObjectURL(blob), memo: '' });
+                } catch (e) {
+                    failed++;
+                }
+            }
+            if (failed) showToast(`${failed}장은 열 수 없는 형식이라 빠졌어요.`);
+            renderPhotos();
+        }
+
+        function removePhoto(index) {
+            URL.revokeObjectURL(photos[index].url);
+            photos.splice(index, 1);
+            renderPhotos();
+        }
+
+        function renderPhotos() {
+            const list = document.getElementById('photoList');
+            list.innerHTML = '';
+            photos.forEach((p, i) => {
+                const row = document.createElement('div');
+                row.className = 'flex items-start space-x-3 bg-gray-950 border border-gray-800 rounded-xl p-2.5';
+                row.innerHTML = `
+                    <div class="relative shrink-0">
+                        <img src="${p.url}" class="w-16 h-16 object-cover rounded-lg">
+                        <span class="absolute -top-1.5 -left-1.5 bg-sky-600 text-white text-[10px] font-bold w-5 h-5 rounded-full flex items-center justify-center">${i + 1}</span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-[10px] text-gray-500 font-mono truncate mb-1">${photoName(i)}</p>
+                        <input type="text" placeholder="예: 개봉 직후 구성품" class="memo w-full bg-gray-900 border border-gray-800 rounded-lg px-2.5 py-1.5 text-xs text-gray-100 placeholder-gray-600 focus:outline-none focus:border-sky-500">
+                    </div>
+                    <button class="text-gray-500 hover:text-red-400 px-1" aria-label="사진 빼기"><i class="fa-solid fa-xmark"></i></button>`;
+                const memo = row.querySelector('.memo');
+                memo.value = p.memo;
+                memo.addEventListener('input', () => { p.memo = memo.value; });
+                row.querySelector('button').addEventListener('click', () => removePhoto(i));
+                list.appendChild(row);
+            });
+            document.getElementById('photoCount').innerText = `(${photos.length}장)`;
+            document.getElementById('sharePhotosBtn').classList.toggle('hidden', photos.length === 0);
+        }
+
+        function photoFiles() {
+            return photos.map((p, i) => new File([p.blob], photoName(i), { type: 'image/jpeg' }));
+        }
+
+        async function sharePhotos() {
+            const files = photoFiles();
+            if (navigator.canShare && navigator.canShare({ files })) {
+                try {
+                    await navigator.share({ files, title: '케이맘픽스 사진' });
+                    showToast('사진을 보냈어요! PC에서 받은 파일을 저장해 두세요.');
+                } catch (e) {
+                    // 사용자가 공유 창을 닫은 경우: 아무것도 하지 않는다
+                }
+                return;
+            }
+            // 공유 기능이 없는 브라우저는 한 장씩 내려받기로 대신한다.
+            files.forEach(file => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(file);
+                a.download = file.name;
+                a.click();
+                setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+            });
+            showToast('이 브라우저는 공유가 안 돼서 사진을 내려받았어요.');
+        }
+
         function generateCommand() {
-            const topic = document.getElementById('topicInput').value.trim();
+            const topic = clean(document.getElementById('topicInput').value);
             if(!topic) {
                 alert('오늘의 주제나 아이디어를 입력해주세요!');
                 return;
             }
+            const type = currentType();
             const wp = document.getElementById('chkWp').checked;
             const naver = document.getElementById('chkNaver').checked;
             const short = document.getElementById('chkShort').checked;
@@ -121,7 +294,17 @@
             if(short) channels.push("숏폼대본");
             if(card) channels.push("카드뉴스");
 
-            const cmd = `claude -p "케이맘픽스 주제: ${topic} / 생성 채널: ${channels.join(', ')} 에 맞춰 마스터 지침(RULE.md) 기반 콘텐츠 5종 세트를 즉시 작성해줘."`;
+            const mode = type === 'deeppick' ? '케이맘 딥픽 모드' : `일반 모드 · ${TYPE_LABELS[type]}`;
+            let photoPart = '';
+            if (type !== 'deeppick' && photos.length) {
+                const first = photoName(0), last = photoName(photos.length - 1);
+                const memos = photos.map((p, i) => p.memo.trim() ? `${i + 1}번: ${clean(p.memo)}` : '').filter(Boolean);
+                photoPart = ` / 내 사진 ${photos.length}장: ${first}${photos.length > 1 ? ` ~ ${last.slice(-6)}` : ''}`
+                    + ' (PC의 다운로드·카카오톡 받은 파일 폴더에서 찾아 사용)'
+                    + (memos.length ? ` / 사진 메모: ${memos.join(', ')}` : '');
+            }
+
+            const cmd = `claude -p "케이맘픽스 주제: ${topic} / 글 종류: ${mode}${photoPart} / 생성 채널: ${channels.join(', ')} 에 맞춰 마스터 지침(RULE.md) 기반 콘텐츠 5종 세트를 즉시 작성해줘."`;
             
             document.getElementById('commandOutput').innerText = cmd;
             document.getElementById('resultBox').classList.remove('hidden');
@@ -157,6 +340,13 @@
                 showToast('음성 인식에 실패했습니다.');
             };
         }
+
+        document.querySelectorAll('input[name="postType"]').forEach(r => r.addEventListener('change', updateTypeUI));
+        document.getElementById('photoInput').addEventListener('change', e => {
+            addPhotos(e.target.files);
+            e.target.value = '';   // 같은 사진을 다시 고를 수 있게 비워 둔다
+        });
+        updateTypeUI();
 
         function showToast(msg) {
             const toast = document.getElementById('toast');

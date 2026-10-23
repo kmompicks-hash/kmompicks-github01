@@ -80,6 +80,12 @@
   - `2_naver.txt`: `[제목]` → `[가운데] 💡 결론적으로 ~` 한 줄 → `[대표 이미지]` → `[ 소제목 제목 ]` 블록 → 정리 → 공정위 문구 → 해시태그. 한 줄 40자, 한 문단 3줄 이내, 문단 사이 빈 줄, 짧은 감탄·사진 자리는 `[가운데]` (서식 세부는 위 '스마트에디터 붙여넣기용 서식')
   - `3_shortform.md`, `4_cardnews.md`, `5_threads.md`
   - `data.json`: `input`(topic/mode/category)과 `wordpress.output`(seo_title/slug/meta_description/focus_keyword/tags), `wordpress.issues`
+- **내 사진(리모컨에서 보낸 사진)**: 명령에 `내 사진 N장: kmom-YYYYMMDD-xxxx-01.jpg ~ NN.jpg`가 있으면
+  - `Downloads`, `Documents\카카오톡 받은 파일`, `OneDrive\문서\카카오톡 받은 파일`, 바탕화면에서 그 이름의 파일을 찾아 `content/<폴더>/photos/`로 복사 (못 찾으면 사용자에게 어디 저장했는지 물어볼 것)
+  - 사진을 직접 열어 보고 내용에 맞는 자리에 배치. 사진 메모(`1번: …`)는 그 사진의 설명·캡션의 근거로 쓰되, 사진에 없는 내용을 지어내지 말 것
+  - 워드프레스: `<figure><img src="photos/kmom-...jpg" alt="..."><figcaption>` (업로드 때 자동으로 미디어에 올라감). 내 사진이 있으면 그 사진이 설명용 그림보다 우선
+  - 네이버: `[이미지: photos/kmom-...jpg]`로 표기. 대표 이미지는 가장 잘 나온 실제 사진을 우선 추천
+  - `photos/`는 .gitignore에 있음(공개 저장소라 개인 사진을 올리지 않음). 이 줄을 .gitignore에서 지우지 말 것
 - **이미지 자동 생성**: 글마다 `images/src/`에 이미지 원본 HTML을 만들고 `.\make_images.cmd content\<폴더>`로 PNG를 만든 뒤 결과를 직접 열어 확인할 것
   - 공통 디자인: `tools/image-kit/kmom.css` (크림 배경 + 브라운 포인트, 하단 KMOM PICKS). 각 HTML에 `<meta name="kmom-size" content="가로x세로">`
   - 대표 이미지 `<slug>-thumbnail` (1200x630, 업로드 시 자동으로 대표 이미지 지정)
