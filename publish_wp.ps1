@@ -46,7 +46,7 @@ function Invoke-WP([string]$Method, [string]$Route, $Body = $null, [hashtable]$Q
     # '/rankmath/v1/…' 처럼 / 로 시작하면 wp/v2 가 아닌 다른 플러그인 경로로 보낸다.
     $path = if ($Route.StartsWith('/')) { $Route.TrimStart('/') } else { "wp/v2/$Route" }
     $uri = "$wpUrl/wp-json/$path" + $(if ($qs) { "?$qs" } else { '' })
-    $params = @{ Method = $Method; Uri = $uri; Headers = $headers.Clone(); UseBasicParsing = $true; TimeoutSec = 60 }
+    $params = @{ Method = $Method; Uri = $uri; Headers = $headers.Clone(); UseBasicParsing = $true; TimeoutSec = 180 }
     if ($File) {
         $params.Body = [IO.File]::ReadAllBytes($File)
         $params.ContentType = @{ '.png' = 'image/png'; '.jpg' = 'image/jpeg'; '.jpeg' = 'image/jpeg'; '.webp' = 'image/webp'; '.gif' = 'image/gif' }[[IO.Path]::GetExtension($File).ToLower()]
@@ -60,14 +60,15 @@ function Invoke-WP([string]$Method, [string]$Route, $Body = $null, [hashtable]$Q
         $resp = Invoke-WebRequest @params
         return [Text.Encoding]::UTF8.GetString($resp.RawContentStream.ToArray()) | ConvertFrom-Json
     } catch {
-        $code = $_.Exception.Response.StatusCode.value__
+        $err = $_   # switch 안에서는 $_ 가 switch 값으로 바뀌므로 미리 잡아 둔다
+        $code = $err.Exception.Response.StatusCode.value__
         $hint = switch ($code) {
             401 { '아이디 또는 애플리케이션 비밀번호가 틀렸습니다 (관리자 > 사용자 > 프로필 > 애플리케이션 비밀번호).' }
             403 { '글쓰기 권한이 없거나 보안 플러그인/방화벽이 REST API 를 막았습니다.' }
             404 { 'REST API 주소를 찾을 수 없습니다 (WP_URL 확인).' }
-            default { $_.Exception.Message }
+            default { $err.Exception.Message }
         }
-        $detail = "$($_.ErrorDetails.Message)"
+        $detail = "$($err.ErrorDetails.Message)"
         if ($detail -match '"message"\s*:\s*"([^"]*)"') { $detail = $Matches[1] }
         elseif ($detail -match '<title>([^<]*)</title>') { $detail = "차단 페이지: $($Matches[1].Trim())" }
         else { $detail = $detail.Substring(0, [Math]::Min(200, $detail.Length)) }
@@ -157,7 +158,15 @@ function Publish-Image([string]$Rel, [string]$Alt) {
     $hit = $cache[$Rel]
     if ($hit -and $hit.hash -eq $hash) { return $hit }
     if ($DryRun) { Write-Host "  · 이미지 업로드 예정: $Rel"; return $null }
-    $media = Invoke-WP POST 'media' -File $path
+    # 서버가 저장은 해 놓고 502 로 답하는 경우가 있어, 같은 이름이 이미 있으면 다시 올리지 않고 그걸 쓴다.
+    $fileName = [IO.Path]::GetFileName($path)
+    $media = @(Invoke-WP GET 'media' -Query @{ search = [IO.Path]::GetFileNameWithoutExtension($path); per_page = 20 }) |
+        Where-Object { $_.source_url -like "*/$fileName" } | Select-Object -First 1
+    if ($media -and -not $hit) {
+        Write-Host "  ♻ 이미 올라가 있는 이미지 사용: $Rel"
+    } else {
+        $media = Invoke-WP POST 'media' -File $path
+    }
     if ($Alt) { [void](Invoke-WP POST "media/$($media.id)" @{ alt_text = $Alt }) }
     $entry = [pscustomobject]@{ hash = $hash; id = $media.id; url = $media.source_url }
     $cache[$Rel] = $entry
