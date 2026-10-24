@@ -99,6 +99,18 @@
             </button>
         </div>
 
+        <!-- Affiliate Links Section (딥픽이 아닐 때만 보임) -->
+        <div id="linkSection" class="bg-gray-900/80 border border-gray-800/80 rounded-2xl p-5 shadow-xl space-y-3">
+            <span class="text-sm font-semibold text-gray-200 flex items-center space-x-2">
+                <i class="fa-solid fa-link text-emerald-400"></i>
+                <span>제휴 링크 <span class="text-gray-500 font-normal text-xs">(있는 것만)</span></span>
+            </span>
+            <input type="url" id="coupangLink" placeholder="쿠팡 파트너스 링크 (워드프레스용)"
+                class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2.5 text-xs text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500">
+            <input type="url" id="brandLink" placeholder="네이버 브랜드커넥트 링크 (네이버 블로그용)"
+                class="w-full bg-gray-950 border border-gray-800 rounded-xl px-3.5 py-2.5 text-xs text-gray-100 placeholder-gray-500 focus:outline-none focus:border-emerald-500">
+        </div>
+
         <!-- Channel Select Section -->
         <div class="bg-gray-900/80 border border-gray-800/80 rounded-2xl p-5 shadow-xl">
             <span class="text-sm font-semibold text-gray-200 block mb-3">포함할 콘텐츠 선택:</span>
@@ -175,6 +187,7 @@
                 label.classList.toggle('border-gray-800', !on);
             });
             document.getElementById('photoSection').classList.toggle('hidden', type === 'deeppick');
+            document.getElementById('linkSection').classList.toggle('hidden', type === 'deeppick');
             const isCoupang = type === 'coupang';
             document.getElementById('photoTitle').innerText = isCoupang ? '쿠팡 리뷰 캡처' : '내 사진';
             document.querySelectorAll('.memo').forEach(m => { m.placeholder = memoHint(); });
@@ -316,7 +329,15 @@
                     + (memos.length ? ` / 사진 메모: ${memos.join(', ')}` : '');
             }
 
-            const cmd = `claude -p "케이맘픽스 주제: ${topic} / 글 종류: ${mode}${photoPart} / 생성 채널: ${channels.join(', ')} 에 맞춰 마스터 지침(RULE.md) 기반 콘텐츠 5종 세트를 즉시 작성해줘."`;
+            let linkPart = '';
+            if (type !== 'deeppick') {
+                const coupang = clean(document.getElementById('coupangLink').value);
+                const brand = clean(document.getElementById('brandLink').value);
+                if (coupang) linkPart += ` / 쿠팡 파트너스 링크: ${coupang}`;
+                if (brand) linkPart += ` / 브랜드커넥트 링크: ${brand}`;
+            }
+
+            const cmd = `claude -p "케이맘픽스 주제: ${topic} / 글 종류: ${mode}${photoPart}${linkPart} / 생성 채널: ${channels.join(', ')} 에 맞춰 마스터 지침(RULE.md) 기반 콘텐츠 5종 세트를 즉시 작성해줘."`;
             
             document.getElementById('commandOutput').innerText = cmd;
             document.getElementById('resultBox').classList.remove('hidden');
